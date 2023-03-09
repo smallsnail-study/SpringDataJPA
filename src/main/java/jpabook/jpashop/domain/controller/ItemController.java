@@ -58,17 +58,14 @@ public class ItemController {
         return "items/updateItemForm";
     }
 
+    /**
+     * 상품 수정, 권장 코드
+     */
     @PostMapping("items/{itemId}/edit") //PathVariable을 사용해서 상품수정
-    public String updateItem(@ModelAttribute("form") BookForm form) {
-        Book book = new Book();
-        book.setId(form.getId());
-        book.setName(form.getName());
-        book.setPrice(form.getPrice());
-        book.setStockQuantity(form.getStockQuantity());
-        book.setAuthor(form.getAuthor());
-        book.setIsbn(form.getIsbn());
+    public String updateItem(@PathVariable Long itemId, @ModelAttribute("form") BookForm form) {
 
-        itemService.saveItem(book);
+        //트랜잭션이 있는 서비스 계층에 식별자( id )와 변경할 데이터를 명확하게 전달(파라미터 or dto)
+        itemService.updateItem(itemId, form.getName(), form.getPrice(), form.getStockQuantity());
         return "redirect:/items";
     }
 }
