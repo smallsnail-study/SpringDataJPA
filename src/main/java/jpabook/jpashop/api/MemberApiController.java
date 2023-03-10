@@ -48,6 +48,29 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
+    /**
+     * 수정 API
+     */
+    @PutMapping("/api/v2/members/{id}")
+    public UpdateMemberResponse updateMember2(@PathVariable("id") Long id,
+                                              @RequestBody @Valid UpdateMemberRequest request) {
+        memberService.update(id, request.getName());
+        Member findMember = memberService.findOne(id);
+        return new UpdateMemberResponse(findMember.getId(), findMember.getName());
+    }
+
+    @Data
+    static class UpdateMemberRequest {
+        private String name;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdateMemberResponse {
+        private Long id;
+        private String name;
+    }
+
     @Data
     static class CreateMemberRequest {
         private String name;
